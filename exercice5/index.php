@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-    <html>
+    <html lang='fr'>
         <head>
-            <meta charset="utf-8"/>
+            <meta charset="utf-8" />
             <title>Les dates Exercice 5</title>
         </head>
         <body>

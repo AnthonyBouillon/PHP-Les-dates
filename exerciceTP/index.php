@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
-        <title>TP</title>
+        <title>Calendrier</title>
         <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
         <!-- Liste déroulante de Janvier à décembre -->
-        <form method="POST">
+        <form method="post">
             <select name="month">
                 <option value="1">Janvier</option>
                 <option value="2">Février</option>
@@ -24,78 +24,74 @@
             <!-- Liste déroulante des années, il incrémente de 1920 à 2050 -->
             <select name="years">
                 <?php
-                for ($years = 1920; $years <= 2050; $years++) {
-                    ?>
-                    <!-- Il affiche les années de 1920 à 2050 -->
-                    <option><?php echo $years; ?></option>
-                    <?php
-                };
+                for ($year = 1920; $year <= 2050; $year++) {
+                 ?>
+                    <!-- Il affiche les années de 1920 à 2050 dans un select -->
+                    <option><?php echo $year; ?></option>
+                <?php
+                }
                 ?>
             </select>
             <input type="submit" value="Valider">
         </form><br/>
         <?php
-        // J'assigne la valeur sélectionné dans une variable
+        // J'assigne la valeur récupérer du mois et de l'année dans une variable
         $month = $_POST['month'];
         $years = $_POST['years'];
-
         $numberDays = date("t", mktime(0, 0, 0, $month, 1, $years));
-        $understood = date("w", mktime(0, 0, 0, $month, 1, $years));
         ?>        
         <p>
-            <!-- Suivant la selection du mois, afficher le mois + afficher la valeur de l'année selectionné -->
+            <!-- Suivant la value du mois dans le select, afficher le mois + afficher la valeur de l'année selectionné -->
             <?php
-            if ($_POST['month'] == '1') {
-                echo 'Janvier ' . $_POST['years'];
-            } elseif ($_POST['month'] == '2') {
-                echo 'Février ' . $_POST['years'];
-            } elseif ($_POST['month'] == '3') {
-                echo 'Mars ' . $_POST['years'];
-            } elseif ($_POST['month'] == '4') {
-                echo 'Avril ' . $_POST['years'];
-            } elseif ($_POST['month'] == '5') {
-                echo 'Mai ' . $_POST['years'];
-            } elseif ($_POST['month'] == '6') {
-                echo 'Juin ' . $_POST['years'];
-            } elseif ($_POST['month'] == '7') {
-                echo 'Juillet ' . $_POST['years'];
-            } elseif ($_POST['month'] == '8') {
-                echo 'Âout ' . $_POST['years'];
-            } elseif ($_POST['month'] == '9') {
-                echo 'Septembre ' . $_POST['years'];
-            } elseif ($_POST['month'] == '10') {
-                echo 'Octobre ' . $_POST['years'];
-            } elseif ($_POST['month'] == '11') {
-                echo 'Novembre ' . $_POST['years'];
-            } elseif ($_POST['month'] == '12') {
-                echo 'Décembre ' . $_POST['years'];
+            if ($month == '1') {
+                echo 'Janvier ' . $years;
+            } elseif ($month == '2') {
+                echo 'Février ' . $years;
+            } elseif ($month == '3') {
+                echo 'Mars ' . $years;
+            } elseif ($month == '4') {
+                echo 'Avril ' . $years;
+            } elseif ($month == '5') {
+                echo 'Mai ' . $years;
+            } elseif ($month == '6') {
+                echo 'Juin ' . $years;
+            } elseif ($month == '7') {
+                echo 'Juillet ' . $years;
+            } elseif ($month == '8') {
+                echo 'Âout ' . $years;
+            } elseif ($month == '9') {
+                echo 'Septembre ' . $years;
+            } elseif ($month == '10') {
+                echo 'Octobre ' . $years;
+            } elseif ($month == '11') {
+                echo 'Novembre ' . $years;
+            } elseif ($month == '12') {
+                echo 'Décembre ' . $years;
             }
             ?>
         </p>
         <!-- Pour afficher les jours -->
         <div>
             <?php
+            /* Ajouter les jours de la semaine dans un tableau */
             $tab_jours = array(' ', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
-            $numberDaysAV = date("t", mktime(0, 0, 0, ($month - 1 < 1) ? 12 : $month - 1, 1, $years));
-            $numberDaysAP = date("t", mktime(0, 0, 0, ($month + 1 > 12) ? 1 : $month + 1, 1, $years));
-            $tab_cal = array(array(), array(), array(), array(), array(), array());
-            $understood = ($understood == 0) ? 7 : $understood;
+            /* PARTIE INCOMPREHENSIBLE */
+            $week = ($week == 0) ? 7 : $week;
             $t = 1;
-            $p = "";
             for ($i = 0; $i < 6; $i++) {
-                for ($j = 0; $j < 7; $j++) {
-                    if ($j + 1 == $understood && $t == 1) {
-                        $tab_cal[$i][$j] = $t;
+                for ($days = 0; $days < 7; $days++) {
+                    if ($days + 1 == $week && $t == 1) {
+                        $tab_cal[$i][$days] = $t;
                         $t++;
                     } elseif ($t > 1 && $t <= $numberDays) {
-                        $tab_cal[$i][$j] = $p . $t;
+                        $tab_cal[$i][$days] = $p . $t;
                         $t++;
                     } elseif ($t > $numberDays) {
                         $p = "*";
-                        $tab_cal[$i][$j] = $p . "1";
+                        $tab_cal[$i][$days] = $p . "1";
                         $t = 2;
                     } elseif ($t == 1) {
-                        $tab_cal[$i][$j] = "*" . ($numberDaysAV - ($understood - ($j + 1)) + 1);
+                        $tab_cal[$i][$days] = "*" . ($numberDaysAV - ($week - ($days + 1)) + 1);
                     }
                 }
             }
@@ -103,12 +99,12 @@
             <table>
                 <tr>
                     <?php
-                    for ($i = 1; $i <= 7; $i++) {
+                    for ($days = 1; $days <= 7; $days++) {
                         ?>
                         <th>
-                    <?php
-                    echo $tab_jours[$i];
-                    ?>
+                            <?php
+                            echo $tab_jours[$days];
+                            ?>
                         </th>
                         <?php
                     }
@@ -118,15 +114,15 @@
                 for ($i = 0; $i < 6; $i++) {
                     ?>
                     <tr>
-    <?php
-    for ($j = 0; $j < 7; $j++) {
-        ?> <td <?php echo (($month == date("n") && $years == date("Y") && $tab_cal[$i][$j] == date("j")) ? : null) ?>><?php echo ((strpos($tab_cal[$i][$j], "*") !== false) ? '<font color="#FFFFFF">' . str_replace("*", "", $tab_cal[$i][$j]) . '</font>' : $tab_cal[$i][$j]); ?></td><?php
-    }
-    ?>
+                        <?php
+                        for ($days = 0; $days < 7; $days++) {
+                            ?> <td <?= (($month == date("n") && $years == date("Y") && $tab_cal[$i][$days] == date("j")) ?: null) ?>><?php echo ((strpos($tab_cal[$i][$days], "*") !== false) ? '<font color="#FFFFFF">' . str_replace("*", "", $tab_cal[$i][$days]) . '</font>' : $tab_cal[$i][$days]); ?></td><?php
+                        }
+                        ?>
                     </tr>
-    <?php
-}
-?>
+                    <?php
+                }
+                ?>
             </table>
         </div>
     </body>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-    <html>
+    <html lag='fr'>
         <head>
-            <meta charset="utf-8"/>
-            <title>Les dates Exercice 4</title>
+            <meta charset="utf-8" />
+            <title>Le timestamp Exercice 4</title>
         </head>
         <body>
+            <!-- Le timestamp est le nombres de secondes écoulés depuis 1970 à maintenant -->
             <h1>Les dates en PHP</h1><hr/>
             <!-- Le timestamp de 1970 à maintenant -->
             <p>Le timestamp du jour est : <?php echo time(); ?></p>
