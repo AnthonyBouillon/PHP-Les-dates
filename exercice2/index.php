@@ -7,7 +7,7 @@
     <body>
         <h1>Les dates en PHP</h1><hr/>
         <!-- Affiche la date courante : 5-01-1958 -->
-        <p>Aujourd'hui nous sommes le : <?php echo date('d-m-y'); ?></p>
+        <p>Aujourd'hui nous sommes le : <?= date('d-m-Y'); ?></p>
         <hr/>
         <p class="btn"><a href="../exercice1/index.php">Précédent</a></p>   
         <p class="btn"><a href="../exercice3/index.php">Suivant</a></p>

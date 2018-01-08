@@ -1,129 +1,91 @@
+<?php
+//Tableau associatif contenant la liste des mois de l'année avec le numéro correspondant
+$months = array(1 => 'Janvier', 2 => 'Février', 3 => 'Mars', 4 => 'Avril', 5 => 'Mai', 6 => 'Juin', 7 => 'Juillet', 8 => 'Août', 9 => 'Septembre', 10 => 'Octobre', 11 => 'Novembre', 12 => 'Décembre');
+/*Vérification de la sélection du mois et de l'année
+ * Si le mois et l'année sont bien sélectionnés on les attribue à $month et $year
+ *  */
+if (isset($_POST['month']) && isset($_POST['year'])) {
+    $month = $_POST['month'];
+    $year = $_POST['year'];
+} else {
+    //Sinon on attribue à $month et $year le mois et l'année en cours
+    $month = date('n');
+    $year = date('Y');
+}
+//Récupération du nombre de jours dans le mois grâce à la fonction date qui prend en paramètre un format et un timestamp que l'on crée
+$numberDaysInMonth = date('t', mktime(0, 0, 0, $month, 1, $year));
+//Récupération du premier jour de la semaine du mois grâce à la fonction date qui prend en paramètre un format et un timestamp que l'on crée
+$firstWeekDayOfMonth = date('N', mktime(0, 0, 0, $month, 1, $year));
+?>
 <!DOCTYPE html>
 <html lang="fr">
     <head>
+        <meta charset="utf-8" />
         <title>Calendrier</title>
-        <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
-        <!-- Liste déroulante de Janvier à décembre -->
-        <form method="post">
+        <form method="POST" action="">
             <select name="month">
-                <option value="1">Janvier</option>
-                <option value="2">Février</option>
-                <option value="3">Mars</option>
-                <option value="4">Avril</option>
-                <option value="5">Mai</option>
-                <option value="6">Juin</option>
-                <option value="7">Juillet</option>
-                <option value="8">Août</option>
-                <option value="9">Séptembre</option>
-                <option value="10">Octobre</option>
-                <option value="11">Novembre</option>
-                <option value="12">Décembre</option>
-            </select>
-            <!-- Liste déroulante des années, il incrémente de 1920 à 2050 -->
-            <select name="years">
                 <?php
-                for ($year = 1920; $year <= 2050; $year++) {
-                 ?>
-                    <!-- Il affiche les années de 1920 à 2050 dans un select -->
-                    <option><?php echo $year; ?></option>
-                <?php
-                }
-                ?>
-            </select>
-            <input type="submit" value="Valider">
-        </form><br/>
-        <?php
-        // J'assigne la valeur récupérer du mois et de l'année dans une variable
-        $month = $_POST['month'];
-        $years = $_POST['years'];
-        $numberDays = date("t", mktime(0, 0, 0, $month, 1, $years));
-        ?>        
-        <p>
-            <!-- Suivant la value du mois dans le select, afficher le mois + afficher la valeur de l'année selectionné -->
-            <?php
-            if ($month == '1') {
-                echo 'Janvier ' . $years;
-            } elseif ($month == '2') {
-                echo 'Février ' . $years;
-            } elseif ($month == '3') {
-                echo 'Mars ' . $years;
-            } elseif ($month == '4') {
-                echo 'Avril ' . $years;
-            } elseif ($month == '5') {
-                echo 'Mai ' . $years;
-            } elseif ($month == '6') {
-                echo 'Juin ' . $years;
-            } elseif ($month == '7') {
-                echo 'Juillet ' . $years;
-            } elseif ($month == '8') {
-                echo 'Âout ' . $years;
-            } elseif ($month == '9') {
-                echo 'Septembre ' . $years;
-            } elseif ($month == '10') {
-                echo 'Octobre ' . $years;
-            } elseif ($month == '11') {
-                echo 'Novembre ' . $years;
-            } elseif ($month == '12') {
-                echo 'Décembre ' . $years;
-            }
-            ?>
-        </p>
-        <!-- Pour afficher les jours -->
-        <div>
-            <?php
-            /* Ajouter les jours de la semaine dans un tableau */
-            $tab_jours = array(' ', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche');
-            /* PARTIE INCOMPREHENSIBLE */
-            $week = ($week == 0) ? 7 : $week;
-            $t = 1;
-            for ($i = 0; $i < 6; $i++) {
-                for ($days = 0; $days < 7; $days++) {
-                    if ($days + 1 == $week && $t == 1) {
-                        $tab_cal[$i][$days] = $t;
-                        $t++;
-                    } elseif ($t > 1 && $t <= $numberDays) {
-                        $tab_cal[$i][$days] = $p . $t;
-                        $t++;
-                    } elseif ($t > $numberDays) {
-                        $p = "*";
-                        $tab_cal[$i][$days] = $p . "1";
-                        $t = 2;
-                    } elseif ($t == 1) {
-                        $tab_cal[$i][$days] = "*" . ($numberDaysAV - ($week - ($days + 1)) + 1);
-                    }
-                }
-            }
-            ?>
-            <table>
-                <tr>
-                    <?php
-                    for ($days = 1; $days <= 7; $days++) {
-                        ?>
-                        <th>
-                            <?php
-                            echo $tab_jours[$days];
-                            ?>
-                        </th>
-                        <?php
-                    }
-                    ?>    
-                </tr>
-                <?php
-                for ($i = 0; $i < 6; $i++) {
+                //On parcourt $months afin de créer les options
+                foreach ($months as $monthNumber => $monthName) {
+                    //Si notre mois sélectionné est égal au mois créé par l'option on lui affecte l'attribut "selected"
                     ?>
-                    <tr>
-                        <?php
-                        for ($days = 0; $days < 7; $days++) {
-                            ?> <td <?= (($month == date("n") && $years == date("Y") && $tab_cal[$i][$days] == date("j")) ?: null) ?>><?php echo ((strpos($tab_cal[$i][$days], "*") !== false) ? '<font color="#FFFFFF">' . str_replace("*", "", $tab_cal[$i][$days]) . '</font>' : $tab_cal[$i][$days]); ?></td><?php
-                        }
-                        ?>
-                    </tr>
+                    <option value="<?= $monthNumber ?>" <?= $month == $monthNumber ? 'selected' : '' ?>>
+                       <?= $monthName ?>
+                    </option>
                     <?php
                 }
                 ?>
-            </table>
-        </div>
-    </body>
+            </select>
+            <select name="year">
+                <?php
+                //On crée une boucle qui va permettre de générer une liste d'années
+                for ($yearsList = 1900; $yearsList <= 2100; $yearsList ++) {
+                    //Si notre année sélectionnée est égale à l'année créée par l'option on lui affecte l'attribut "selected"
+                    ?>
+                    <option value="<?= $yearsList ?>" <?= $year == $yearsList ? 'selected' : '' ?>><?= $yearsList ?></option><?php
+                }
+                ?>
+            </select>
+            <input type="submit" name="send" value="Valider" />
+        </form>
+        <table border="1">
+            <thead>
+            <th>Lundi</th>
+            <th>Mardi</th>
+            <th>Mercredi</th>
+            <th>Jeudi</th>
+            <th>Vendredi</th>
+            <th>Samedi</th>
+            <th>Dimanche</th>
+        </thead>
+        <tbody>
+            <tr>
+                <?php
+                //$currentDay correspond au numéro du jour en cours
+                $currentDay = 1;
+                /*$daysTiles correspond au nombre de cases nécessaires du calendrier
+                 * On ajoute à $numberDaysInMonth la variable $firstWeekDayOfMonth 
+                 * On soustrait 1 au résultat afin d'obtenir le bon nombre de cases
+                 */
+                for ($daysTiles = 1; $daysTiles <= $numberDaysInMonth + $firstWeekDayOfMonth - 1; $daysTiles ++) {
+                    //$firstWeekDayOfMonth est inférieure ou égale au nombre de cases. Quand on arrive au jour de la semaine du premier jour du mois, on commence à écrire le numéro des jours
+                    if ($firstWeekDayOfMonth <= $daysTiles) {
+                        ?><td><?= $currentDay ?></td><?php
+                        $currentDay ++;
+                    } else {
+                        //On crée des cases vides pour éviter un décalage vers la gauche
+                        ?><td></td><?php
+                    }
+                    //Si le nombre de cases est un multiple de 7 on passe une ligne car c'est la fin d'une semaine
+                    if ($daysTiles % 7 == 0) {
+                        ?></tr><tr><?php
+                    }
+                }
+                ?>
+            </tr>
+        </tbody>
+    </table>
+</body>
 </html>
